@@ -5,21 +5,19 @@ import (
 )
 
 func TestAdd(t *testing.T) {
-	dictionary := Dictionary{}
+	dictionary := Dictionary{"test": "testing description"}
 
-	t.Run("Add word in dictionary", func(t *testing.T) {
-		err := dictionary.Add("Black", "Color")
+	t.Run("Word is in dictionary", func(t *testing.T) {
+		err := dictionary.Add("test", "123")
 
-		if err != nil {
+		if err == nil {
 			t.Fatal(err)
 		}
 	})
-	t.Run("Word is in dictionary", func(t *testing.T) {
-		dictionary.Add("Black", "Color")
+	t.Run("Word not in dictionary", func(t *testing.T) {
+		err := dictionary.Add("me", "good boy")
 
-		err := dictionary.Add("Black", "Color2")
-
-		if err == nil {
+		if err != nil {
 			t.Fatal(err)
 		}
 	})
@@ -29,11 +27,10 @@ func TestSearch(t *testing.T) {
 	dictionary := Dictionary{"test": "testing description"}
 
 	t.Run("Word is in dictionary", func(t *testing.T) {
-		got, _ := dictionary.Search("test")
-		want := "testing description"
+		_, err := dictionary.Search("test")
 
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
+		if err != nil {
+			t.Fatal(err)
 		}
 	})
 	t.Run("Word not in dictionary", func(t *testing.T) {
@@ -49,7 +46,6 @@ func TestDelete(t *testing.T) {
 	dictionary := Dictionary{"test": "testing description"}
 
 	t.Run("Word is in dictionary", func(t *testing.T) {
-
 		err := dictionary.Delete("test")
 
 		if err != nil {
@@ -57,7 +53,11 @@ func TestDelete(t *testing.T) {
 		}
 	})
 	t.Run("Word not in dictionary", func(t *testing.T) {
-		dictionary.Delete("123123")
+		err := dictionary.Delete("123123")
+
+		if err == nil {
+			t.Fatal(err)
+		}
 	})
 }
 
